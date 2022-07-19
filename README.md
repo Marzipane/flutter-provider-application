@@ -1,4 +1,4 @@
-# flutter_shop
+# flutter_provider_application
 
 A new Flutter project.
 
