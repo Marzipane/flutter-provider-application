@@ -15,54 +15,54 @@ class _ThemePageState extends State<ThemePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Container(
-      margin: EdgeInsets.only(top: 20),
-      child: Center(
-        child: Consumer<ThemeChangeProvider>(
-          builder: (context, value, child) {
-            return Column(
-              children: [
-                AnimatedContainer(
-                  // Use the properties stored in the State class.
-                  width: value._width,
-                  height: value._height,
-                  decoration: BoxDecoration(color: value._color),
-                  duration: Duration(milliseconds: 500),
-                ),
-                Switch(
-                  value: isChecked,
-                  onChanged: (bool value_1) {
-                    setState(() {
-                      isChecked = value_1;
-                      value.getRandomColor();
-                      value.getRandomShape();
-                    });
-                  },
-                ),
-              ],
-            );
-          },
+    return Consumer<ThemeChangeProvider>(builder: (context, value, child) {
+      return Scaffold(
+        appBar: AppBar(
+            title: Text(
+          'Merhaba',
+          style: TextStyle(color: value._color),
+        )),
+        backgroundColor: value._color,
+        body: Column(
+          children: [
+            AnimatedContainer(
+              // Use the properties stored in the State class.
+              width: value._width,
+              height: value._height,
+              decoration: BoxDecoration(color: value._color),
+              duration: const Duration(milliseconds: 500),
+            ),
+            Switch(
+              value: isChecked,
+              onChanged: (bool value_1) {
+                setState(() {
+                  isChecked = value_1;
+                  value.getRandomColor();
+                  // value.getRandomShape();
+                });
+              },
+            ),
+          ],
         ),
-      ),
-    ));
+      );
+    });
   }
 }
 
 class ThemeChangeProvider extends ChangeNotifier {
   Random random = Random();
   Color _color = Colors.blue;
-  double _width = 100;
-  double _height = 100;
-  
+  double _width = 200;
+  double _height = 200;
 
   void getRandomColor() {
-    _color = Color((Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0);
+    _color = Color((Random().nextDouble() * 0xFFFFFF).toInt())
+        .withOpacity(Random().nextDouble() * 1.0);
     notifyListeners();
   }
 
   void getRandomShape() {
-    _width = random.nextInt(300).toDouble();
-    _height = random.nextInt(300).toDouble();
+    _width = random.nextInt(200) + 100.toDouble();
+    _height = random.nextInt(200) + 100.toDouble();
   }
 }
