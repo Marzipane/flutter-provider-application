@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import 'pages/counter_page.dart';
+import 'pages/theme_page.dart';
 import 'pages/widhlist_page.dart';
 
 void main() => runApp(const MyApp());
@@ -36,30 +37,30 @@ class MyApp extends StatelessWidget {
             initialData: 0,
             create: (_) => EventProvider().intStream(),
           ),
+          ChangeNotifierProvider<ThemeChangeProvider>.value(value: ThemeChangeProvider()),
         ],
         child: DefaultTabController(
-          length: 3,
-          child: DefaultTabController(
-            length: 3,
-            child: Scaffold(
-              appBar: AppBar(
-                title: const Text("Provider Demo"),
-                centerTitle: true,
-                bottom: const TabBar(
-                  tabs: <Widget>[
-                    Tab(icon: Icon(Icons.home_outlined)),
-                    Tab(icon: Icon(Icons.add)),
-                    Tab(icon: Icon(Icons.message)),
-                  ],
-                ),
-              ),
-              body: const TabBarView(
-                children: <Widget>[
-                  WishlistPage(),
-                  CounterPage(),
-                  MyEventPage(),
+          length: 4,
+          child: Scaffold(
+            appBar: AppBar(
+              title: const Text("Provider Demo"),
+              centerTitle: true,
+              bottom: const TabBar(
+                tabs: <Widget>[
+                  Tab(icon: Icon(Icons.home_outlined)),
+                  Tab(icon: Icon(Icons.add)),
+                  Tab(icon: Icon(Icons.message)),
+                  Tab(icon: Icon(Icons.dark_mode_outlined)),
                 ],
               ),
+            ),
+            body: const TabBarView(
+              children: <Widget>[
+                WishlistPage(),
+                CounterPage(),
+                MyEventPage(),
+                ThemePage()
+              ],
             ),
           ),
         ),
@@ -88,22 +89,22 @@ class MyEventPage extends StatelessWidget {
 }
 
 // CountProvider (ChangeNotifier)
-class CountProvider extends ChangeNotifier {
-  int _count = 0;
-  int get counterValue => _count;
+  class CountProvider extends ChangeNotifier {
+    int _count = 0;
+    int get counterValue => _count;
 
-  void incrementCount() {
-    _count++;
-    notifyListeners();
+    void incrementCount() {
+      _count++;
+      notifyListeners();
+    }
+
+    void decrementCount() {
+      _count--;
+      notifyListeners();
+    }
   }
 
-  void decrementCount() {
-    _count--;
-    notifyListeners();
-  }
-}
-
-// UserProvider (Future)
+// ItemProvider (Future)
 class ItemProvider {
   final String _dataPath = "assets/items.json";
   List<Item> items = [];
